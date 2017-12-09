@@ -8,6 +8,16 @@ tensorflow 1.4
 
 opencv
 
+## Training processing
+
+![](loss.png)
+
+![](print_log.png)
+
+## Future work
+
+[Joint CTC Attention](https://arxiv.org/pdf/1609.06773v1.pdf)
+
 ### Reference
 
 [Attention-OCR](https://github.com/da03/Attention-OCR)
