@@ -8,6 +8,8 @@ tensorflow 1.4
 
 opencv
 
+python3.6
+
 ## Training processing
 
 ![](loss.png)
@@ -15,6 +17,8 @@ opencv
 ![](print_log.png)
 
 ## Future work
+
+[Spatial Transformer Networks](https://arxiv.org/pdf/1506.02025.pdf)
 
 [Joint CTC Attention](https://arxiv.org/pdf/1609.06773v1.pdf)
 

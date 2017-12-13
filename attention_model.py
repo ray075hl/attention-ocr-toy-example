@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.contrib import layers
 from tensorflow.python.layers.core import Dense
-from data_generator import *
+from data_generator_att import *
 
 START_TOKEN = 0
 END_TOKEN = 1
@@ -113,7 +113,8 @@ def build_compute_graph():
     pred_helper = tf.contrib.seq2seq.GreedyEmbeddingHelper(
         embeddings, start_tokens=tf.to_int32(start_tokens), end_token=1)
     train_outputs = decode(train_helper, train_output_embed, 'decode')
-    pred_outputs = decode(pred_helper, pred_output_embed, 'decode', reuse=True)
+    #pred_outputs = decode(pred_helper, pred_output_embed, 'decode', reuse=True)
+    pred_outputs = decode(pred_helper, train_output_embed, 'decode', reuse=True)
 
     train_decode_result = train_outputs[0].rnn_output[0, :-1, :]
     pred_decode_result = pred_outputs[0].rnn_output[0, :, :]
