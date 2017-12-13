@@ -4,7 +4,7 @@ The goal of this project is to bring me to try and experiment with the seq2seq n
 
 ### Tools
 
-tensorflow 1.4
+[tensorflow 1.4](https://github.com/tensorflow/tensorflow)
 
 opencv
 
