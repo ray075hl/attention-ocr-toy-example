@@ -11,7 +11,7 @@ TRAIN_STEP = 100000
 BATCH_SIZE  = 128
 print(N_CLASS)
 
-image = tf.placeholder(tf.float32, shape=(None, IMAGE_HEIGHT, 120, 1), name='img_data')
+image = tf.placeholder(tf.float32, shape=(None, IMAGE_HEIGHT, None, 1), name='img_data')
 label = tf.sparse_placeholder(tf.int32, name='label')
 feature_length = tf.placeholder(tf.int32, shape=[None], name='feature_length')
 
@@ -78,11 +78,11 @@ def encoder_net(_image, scope, reuse=tf.AUTO_REUSE):
 
 
 def ctc_loss(_lstm_features, _label, _feature_length):
-    predict_output = layers.fully_connected(inputs=_lstm_features,
+    project_output = layers.fully_connected(inputs=_lstm_features,
                                   num_outputs=N_CLASS,
                                   activation_fn=None)
-    #`[max_time x batch_size x num_classes]`.
-    loss = tf.nn.ctc_loss(labels=_label, inputs=predict_output, sequence_length=_feature_length, time_major=False)
+    #[max_time x batch_size x num_classes].
+    loss = tf.nn.ctc_loss(labels=_label, inputs=project_output, sequence_length=_feature_length, time_major=False)
     cost = tf.reduce_mean(loss)
     train_one_step = tf.train.AdadeltaOptimizer().minimize(cost)
     return cost, train_one_step

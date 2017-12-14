@@ -25,6 +25,7 @@ bg_path = 'bgs/'
 bg_file_list = os.listdir(bg_path)
 bg_nums = len(bg_file_list)
 
+
 def sparse_tuple_from(sequences, dtype=np.int32):
     """Create a sparse representention of x.
     Args:
