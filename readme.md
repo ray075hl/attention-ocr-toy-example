@@ -18,9 +18,6 @@ python3.6
 
 ![](print_log.png)
 
-## Future work
-
-[Spatial Transformer Networks](https://arxiv.org/pdf/1506.02025.pdf)
 
 
 ### Reference
