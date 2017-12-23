@@ -1,2 +1,0 @@
-model_checkpoint_path: "attention_digit_ocr.model-100"
-all_model_checkpoint_paths: "attention_digit_ocr.model-100"
