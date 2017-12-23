@@ -218,10 +218,9 @@ def name_training_data_generator(batch_size=32):
         length = random.choice(LENGTHS)
         n_len = length+2
         Y = np.ones((batch_size, n_len), dtype=np.float32) * -2
-        YY = np.ones((batch_size, n_len - 1), dtype=np.float32) * -2
+        YY = np.ones((batch_size, n_len), dtype=np.float32) * -2
         for i in range(batch_size):
             img, label = generate_im(a[0], length)
-            print('label:{}'.format(label))
             label_length[i] = len(label)
 
             blur_rand = random.randint(0, 4)

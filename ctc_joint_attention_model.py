@@ -149,12 +149,12 @@ class CtcPlusAttModel(object):
         train_outputs = self.__att_decode(train_helper, rnn_features, 'decode')
         pred_outputs = self.__att_decode(pred_helper, rnn_features, 'decode', reuse=True)
 
-        train_decode_result = train_outputs[0].rnn_output[0, :-1, :]
-        pred_decode_result = pred_outputs[0].rnn_output[0, :, :]
+        # train_decode_result = train_outputs[0].rnn_output[0, :-1, :]
+        # pred_decode_result = pred_outputs[0].rnn_output[0, :, :]
 
-        att_loss = tf.nn.softmax_cross_entropy_with_logits(logits=train_outputs[0].rnn_output[:, :-1, :],   # logits
-                                                           labels=tf.one_hot(self.att_target_output,
-                                                           depth=self.vocab_att_size))
+        mask = tf.cast(tf.sequence_mask(self.batch_size * [self.att_train_length[0]-1], self.att_train_length[0]), tf.float32)
+        att_loss = tf.contrib.seq2seq.sequence_loss(train_outputs[0].rnn_output, self.att_target_output,
+                                                weights=mask)
 
         return att_loss
 
@@ -201,13 +201,13 @@ class CtcPlusAttModel(object):
         encode_features = self.__shared_encoder()
 
         # attention part
-        attention_loss = self.__attention_loss_branch(encode_features)
+        attention_loss = tf.reduce_mean(self.__attention_loss_branch(encode_features))
 
         # ctc part
-        ctc_loss = self.__ctc_loss_branch(encode_features)
+        ctc_loss = tf.reduce_mean(self.__ctc_loss_branch(encode_features))
 
         # merge part
-        t_loss = tf.reduce_mean(attention_loss)*self.att_loss_weights + tf.reduce_mean(ctc_loss)*self.ctc_loss_weights
+        t_loss = attention_loss*self.att_loss_weights + ctc_loss*self.ctc_loss_weights
         train_step = tf.train.AdadeltaOptimizer().minimize(t_loss)
         return train_step, t_loss
 

@@ -10,7 +10,7 @@ from PIL import ImageFont
 
 OUTPUT_SHAPE = (32, 120)
 DIGITS = '0123456789'
-LENGTHS = [3, 4, 5]
+LENGTHS = [3,4,5]
 FONT_HEIGHT = 28
 font_out_height = 31
 
@@ -232,7 +232,7 @@ def gen_training_data(batch_size=32):
 
         ctc_label = []
         att_train_output = np.ones((batch_size, att_train_length), dtype=np.float32)
-        att_target_output = np.ones((batch_size, att_train_length-1), dtype=np.float32)
+        att_target_output = np.ones((batch_size, att_train_length), dtype=np.float32)
         for i in range(batch_size):
             img, label = generate_im(a[0], length)
             blur_rand = random.randint(0, 4)
@@ -279,6 +279,6 @@ if __name__ == '__main__':
     batchsize = 2
     r = next(gen_training_data(batchsize))
     for _i in range(batchsize):
-        cv2.imwrite(str(_i)+'.jpg', 255*r['input'][_i])
+        cv2.imwrite(str(_i)+'.jpg', 255*r['input_image'][_i])
         print(r['att_train_output'][_i])
         print(r['att_target_output'][_i])

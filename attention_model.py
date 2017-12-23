@@ -119,12 +119,11 @@ def build_compute_graph():
     train_decode_result = train_outputs[0].rnn_output[0, :-1, :]
     pred_decode_result = pred_outputs[0].rnn_output[0, :, :]
 
-    print(tf.one_hot(target_output, depth=VOCAB_SIZE).get_shape())
-    loss = tf.div(
-        tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(logits=train_outputs[0].rnn_output[:, :-1, :], # logits
-                                                        labels=tf.one_hot(target_output, depth=VOCAB_SIZE))),# targets
-        tf.cast(train_length[0], tf.float32)
-        )
+    mask = tf.cast(tf.sequence_mask(BATCH_SIZE * [train_length[0] - 1], train_length[0]),
+                   tf.float32)
+    att_loss = tf.contrib.seq2seq.sequence_loss(train_outputs[0].rnn_output, target_output,
+                                                weights=mask)
+    loss = tf.reduce_mean(att_loss)
 
     train_one_step = tf.train.AdadeltaOptimizer().minimize(loss)
     return loss, train_one_step, train_decode_result, pred_decode_result
